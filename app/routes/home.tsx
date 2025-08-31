@@ -2,6 +2,9 @@ import Navbar from "~/components/Navbar";
 import type { Route } from "./+types/home";
 import { resumes } from "constants/index";
 import Resumecard from "~/components/Resumecard";
+import { useLocation, useNavigate } from "react-router";
+import { useEffect } from "react";
+import { usePuterStore } from "~/lib/puter"
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -11,10 +14,17 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function Home() {
+  const {auth}=usePuterStore();
+    
+    const navigate=useNavigate();
+    useEffect(() => {
+      if(!auth.isAuthenticated) navigate('/auth?next=/')
+    }, [auth.isAuthenticated])
   return (
     <main>
       <section className="bg-[url('/images/bg-main.svg')] bg-cover">
         <Navbar></Navbar>
+       
         <div className="page-heading py-16">
           <h1>Track Your Applications & Resume Ratings</h1>
           <h2>Review your submission and check AI-powered feedback</h2>
